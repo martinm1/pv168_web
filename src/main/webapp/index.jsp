@@ -48,5 +48,37 @@
             </table>
             <input type="Submit" value="Zadat" />
         </form>
+        
+    
+        <table border="1">
+            <thead>
+            <tr>
+                <th>název</th>
+                <th>autor</th>
+            </tr>
+            </thead>
+            <c:forEach items="${agents}" var="agent">
+                <tr>
+                    <td><c:out value="${mission.danger}"/></td>
+                    <td><c:out value="${mission.assignment}"/></td>
+                    <td><form method="post" action="${pageContext.request.contextPath}/agents/delete?id=${agent.id}"
+                              style="margin-bottom: 0;"><input type="submit" value="Smazat"></form></td>
+                </tr>
+            </c:forEach>
+        </table>
+        <h2>Zadejte misi</h2>
+        <form action="${pageContext.request.contextPath}/MissionServlet/add" method="post">
+            <table>
+                <tr>
+                    <th>stupeň nebezpečí:</th>
+                    <td><input type="text" name="danger" value="<c:out value='${param.name}'/>"/></td>
+                </tr>
+                <tr>
+                    <th>co je cílem mise:</th>
+                    <td><input type="text" name="assignment" value="<c:out value='${param.compromised}'/>"/></td>
+                </tr>
+            </table>
+            <input type="Submit" value="Zadat" />
+        </form>
     </body>
 </html>

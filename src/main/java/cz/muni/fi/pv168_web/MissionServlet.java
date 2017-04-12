@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 public class MissionServlet extends HttpServlet {
     
     private static final String LIST_JSP = "/index.jsp";
-    private final static Logger log = LoggerFactory.getLogger(AgentServlet.class);
+    private final static Logger log = LoggerFactory.getLogger(MissionServlet.class);
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
