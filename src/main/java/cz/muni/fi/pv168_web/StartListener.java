@@ -10,6 +10,8 @@ import cz.muni.fi.pv168.AgentManagerImpl;
 import cz.muni.fi.pv168.MissionManagerImpl;
 import cz.muni.fi.pv168.Main;
 import cz.muni.fi.pv168.MissionManager;
+import cz.muni.fi.pv168.SpyOrganizationManager;
+import cz.muni.fi.pv168.SpyOrganizationManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,12 +23,14 @@ import javax.sql.DataSource;
 
 /**
  *
- * @author Boris
+ * @author martin
  */
+@WebListener
 public class StartListener implements ServletContextListener {
     
      private final static Logger log = LoggerFactory.getLogger(StartListener.class);
     
+    @Override
     public void contextInitialized(ServletContextEvent ev){
         log.info("webová aplikace inicializována");
         ServletContext servletContext = ev.getServletContext();
@@ -38,12 +42,18 @@ public class StartListener implements ServletContextListener {
         AgentManager agentManager = new AgentManagerImpl();
         agentManager.setDataSource(dataSource);
         
-        servletContext.setAttribute("AgentManager", agentManager);
-        servletContext.setAttribute("MissionManager", missionManager);
+        SpyOrganizationManager spyOrganizationManager = new SpyOrganizationManagerImpl();
+        spyOrganizationManager.setDataSource(dataSource);
+
+        
+        servletContext.setAttribute("agentManager", agentManager);
+        servletContext.setAttribute("missionManager", missionManager);
+        servletContext.setAttribute("spyOrganizationManager", spyOrganizationManager);
         log.info("vytvořeny manažery a uloženy do atributů servletContextu");
         
     }
     
+    @Override
     public void contextDestroyed(ServletContextEvent ev) {
         log.info("aplikace končí");
     }
