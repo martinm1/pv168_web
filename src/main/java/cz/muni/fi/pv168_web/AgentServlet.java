@@ -23,6 +23,7 @@ import cz.muni.fi.pv168.ServiceFailureException;
 import cz.muni.fi.pv168.IllegalEntityException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  *
@@ -62,14 +63,28 @@ public class AgentServlet extends HttpServlet {
                     showAgentsList(request, response);
                     return;
                 }
+                if (!compromised.equals("true") && !compromised.equals("false")) {
+                    request.setAttribute("chyba", "Compromised musí být true nebo false !");
+                    log.debug("form data invalid");
+                    showAgentsList(request, response);
+                    return;
+                }
+                LocalDateTime dateWorkingSinceAdd;
+                try{
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                    dateWorkingSinceAdd = LocalDateTime.parse(workingSince, formatter);
+                }catch(DateTimeParseException e){
+                    request.setAttribute("chyba", "Chybně vyplněné datum ! Správný formát má například tohle datum: 1984-01-14 10:40");
+                    log.debug("form data invalid");
+                    showAgentsList(request, response);
+                    return;
+                }
                 //form data processing - storing to database
                 try {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                    
                     Agent agent = new Agent();
                     //agent.setId(null);
                     agent.setName(name);
-                    agent.setWorkingSince(LocalDateTime.parse(workingSince, formatter));
+                    agent.setWorkingSince(dateWorkingSinceAdd);
                     agent.setCompromised(Boolean.parseBoolean(compromised));
                     getAgentManager().createAgent(agent);
                     
@@ -96,7 +111,54 @@ public class AgentServlet extends HttpServlet {
                 }
             case "/update":
                 //TODO
-                return;
+                String myname = request.getParameter("name");
+                String myworkingSince = request.getParameter("workingSince");
+                String mycompromised = request.getParameter("compromised");
+                Long myid = Long.valueOf(request.getParameter("id"));
+                if (myname == null || myname.length() == 0 || myworkingSince == null || myworkingSince.length() == 0 || mycompromised == null || mycompromised.length() == 0) {
+                    request.setAttribute("chyba", "Je nutné vyplnit všechny hodnoty !");
+                    log.debug("form data invalid");
+                    showAgentsList(request, response);
+                    return;
+                }
+                if (!mycompromised.equals("true") && !mycompromised.equals("false")) {
+                    request.setAttribute("chyba", "Compromised musí být true nebo false !");
+                    log.debug("form data invalid");
+                    showAgentsList(request, response);
+                    return;
+                }
+                LocalDateTime dateWorkingSince;
+                try{
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                    dateWorkingSince = LocalDateTime.parse(myworkingSince, formatter);
+                }catch(DateTimeParseException e){
+                    request.setAttribute("chyba", "Chybně vyplněné datum ! Správný formát má například tohle datum: 1984-01-14 10:40");
+                    log.debug("form data invalid");
+                    showAgentsList(request, response);
+                    return;
+                }
+                try {
+                    
+                    
+                    Agent myagent = new Agent();
+                    //agent.setId(null);
+                    myagent.setId(myid);
+                    myagent.setName(myname);
+                    myagent.setWorkingSince(dateWorkingSince);
+                    myagent.setCompromised(Boolean.parseBoolean(mycompromised));
+                    getAgentManager().updateAgent(myagent);
+                    
+                    //redirect-after-POST protects from multiple submission
+                    log.debug("redirecting after POST");
+                    response.sendRedirect(request.getContextPath()+URL_MAPPING);
+                    return;
+                } catch (IllegalEntityException|ServiceFailureException e) {
+                    log.error("Cannot update agent", e);
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+                    return;
+                }
+                
+                //return;
             default:
                 log.error("Unknown action " + action);
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Unknown action " + action);
