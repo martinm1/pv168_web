@@ -1,8 +1,4 @@
-<%-- 
-    Document   : list
-    Created on : 13.4.2017, 12:23:53
-    Author     : Boris
---%>
+
 
 <%@page contentType="text/html;charset=utf-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

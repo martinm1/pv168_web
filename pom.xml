@@ -15,40 +15,34 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
-            <version>6.0</version>
-            <scope>provided</scope>
-        </dependency>
+        
         <dependency>
             <groupId>cz.muni.fi</groupId>
             <artifactId>pv168</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
         </dependency>
         
+        <!-- Servlet and JSP APIs-->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-api</artifactId>
+            <version>9.0.0.M19</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- JSTL API -->
-        <!-- https://mvnrepository.com/artifact/org.apache.taglibs/taglibs-standard-spec -->
         <dependency>
             <groupId>org.apache.taglibs</groupId>
             <artifactId>taglibs-standard-spec</artifactId>
             <version>1.2.5</version>
         </dependency>
-
         <!-- JSTL implementation -->
-        <!-- https://mvnrepository.com/artifact/org.apache.taglibs/taglibs-standard-impl -->
         <dependency>
             <groupId>org.apache.taglibs</groupId>
             <artifactId>taglibs-standard-impl</artifactId>
-            <version>1.2.5</version>
+            <version>1.2.1</version>
         </dependency>
-        
     </dependencies>
         
     <build>
