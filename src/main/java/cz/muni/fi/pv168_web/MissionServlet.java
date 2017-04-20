@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author martin
  */
-@WebServlet(name = "MissionServlet", urlPatterns = {"/MissionServlet"})
+@WebServlet(MissionServlet.URL_MAPPING+"/*")
 public class MissionServlet extends HttpServlet {
     
     private static final String LIST_JSP = "/index.jsp";
@@ -121,7 +121,7 @@ public class MissionServlet extends HttpServlet {
     private void showMissionList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             log.debug("showing table of missions");
-            request.setAttribute("Missions", getMissionManager().findAllMissions());
+            request.setAttribute("missions", getMissionManager().findAllMissions());
             request.getRequestDispatcher(LIST_JSP).forward(request, response);
         } catch (ServiceFailureException e) {
             log.error("Cannot show missions", e);
