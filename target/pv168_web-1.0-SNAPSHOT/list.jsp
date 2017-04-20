@@ -8,40 +8,20 @@
         <table border="1">
             <thead>
             <tr>
-                <th>danger</th>
-                <th>assignment</th>
+                <th>Danger</th>
+                <th>Assignment</th>
                 
             </tr>
             </thead>
             <c:forEach items="${missions}" var="mission">
                 <tr>
-                    <td><c:out value="${mission.danger}"/></td>
-                    <td><c:out value="${mission.assignment}"/></td>
+                    <form action="${pageContext.request.contextPath}/missions/update?id=${mission.id}" method="post">
+                        <td><input type="text" name="dangerUpdate" value="<c:out value='${mission.danger}'/>"/></td>
+                        <td><input type="text" name="assignmentUpdate" value="<c:out value='${mission.assignment}'/>"/></td>
+                        <td><input type="Submit" value="Update" /></td>
+                    </form>
                     <td><form method="post" action="${pageContext.request.contextPath}/missions/delete?id=${mission.id}"
                               style="margin-bottom: 0;"><input type="submit" value="Smazat"></form></td>
-                </tr>
-            </c:forEach>
-        </table>
-        
-        <table border="1">
-            <thead>
-            <tr>
-                <th>danger</th>
-                <th>assignment</th>
-                <th>danger</th>
-                <th>assignment</th>
-            </tr>
-            </thead>
-            <c:forEach items="${missions}" var="mission">
-                <tr>
-                    <td><c:out value="${mission.danger}"/></td>
-                    <td><c:out value="${mission.assignment}"/></td>
-                    <form action="${pageContext.request.contextPath}/missions/update" method="post">
-                    <td><input type="text" name="danger" value="<c:out value='${param.danger}'/>"/></td>
-                    <td><input type="text" name="assignment" value="<c:out value='${param.assignment}'/>"/></td>
-                    <input type="text" name="id" value='${mission.id}'/>
-                    <td><input type="Submit" value="Update" /></td>
-                    </form>
                     
                     </tr>
             </c:forEach>

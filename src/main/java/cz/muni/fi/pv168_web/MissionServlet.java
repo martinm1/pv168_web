@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 @WebServlet(MissionServlet.URL_MAPPING+"/*")
 public class MissionServlet extends HttpServlet {
     
-    private static final String LIST_JSP = "/index.jsp";
+    private static final String LIST_JSP = "/list.jsp";
     public static final String URL_MAPPING = "/missions";
     private final static Logger log = LoggerFactory.getLogger(MissionServlet.class);
     
@@ -41,9 +41,20 @@ public class MissionServlet extends HttpServlet {
             case "/add":
                 String danger = request.getParameter("danger");
                 String assignment = request.getParameter("assignment");
+                
+                
              
                 if (assignment == null || assignment.length() == 0 || danger == null || danger.length() == 0) {
                     request.setAttribute("chyba", "Je nutne vyplnit vsetky hodnoty !");
+                    log.debug("form data invalid");
+                    showMissionList(request, response);
+                    return;
+                }
+                
+                try {
+                    Integer.parseInt(danger);
+                } catch(NumberFormatException ex) {
+                    request.setAttribute("chyba", "Je nutne vyplnit nebezpecenstvo cislom !");
                     log.debug("form data invalid");
                     showMissionList(request, response);
                     return;
@@ -77,11 +88,20 @@ public class MissionServlet extends HttpServlet {
                 }
             case "/update":
                 
-                String myDanger = request.getParameter("danger");
-                String myAssignment = request.getParameter("assignment");
+                String myDanger = request.getParameter("dangerUpdate");
+                String myAssignment = request.getParameter("assignmentUpdate");
                 Long myId = Long.valueOf(request.getParameter("id"));
                 if (myDanger == null || myDanger.length() == 0 || myAssignment == null || myAssignment.length() == 0) {
                     request.setAttribute("chyba", "Je nutne vyplnit vsetky hodnoty !");
+                    log.debug("form data invalid");
+                    showMissionList(request, response);
+                    return;
+                }
+                
+                try {
+                    Integer.parseInt(myDanger);
+                } catch(NumberFormatException ex) {
+                    request.setAttribute("chyba", "Je nutne vyplnit nebezpecenstvo cislom !");
                     log.debug("form data invalid");
                     showMissionList(request, response);
                     return;
