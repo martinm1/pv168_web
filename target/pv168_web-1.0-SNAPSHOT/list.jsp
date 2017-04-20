@@ -42,7 +42,7 @@
                     <td><input type="text" name="name" value="<c:out value='${param.name}'/>"/></td>
                     <td><input type="text" name="workingSince" value="<c:out value='${param.workingSince}'/>"/></td>
                     <td><input type="text" name="compromised" value="<c:out value='${param.compromised}'/>"/></td>
-                    <input type="text" name="id" value='${agent.id}'/>
+                    <input type="hidden" name="id" value='${agent.id}'/>
                     <td><input type="Submit" value="Update" /></td>
                     </form>
                     
